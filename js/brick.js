@@ -8,7 +8,13 @@ class Brick {
     return this.coords;
   }
 
+  rotateRightCoords () {
+    return this.coords;
+  }
+
   executeRotationLeft () {}
+
+  executeRotationRight () {}
 }
 
 export default Brick;

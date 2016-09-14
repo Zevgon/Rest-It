@@ -96,13 +96,15 @@
 	      document.addEventListener('keydown', function (event) {
 	        switch (event.key) {
 	          case 's':
-	            _this.play();
+	            if (!_this.timerId) {
+	              _this.play();
+	            }
 	            break;
 	          case 'p':
 	            window.clearInterval(_this.timerId);
+	            _this.timerId = undefined;
 	            break;
 	          case 'ArrowLeft':
-	            var that = _this;
 	            _this.board.moveLeft();
 	            _this.board.update();
 	            _this.render();
@@ -114,6 +116,11 @@
 	            break;
 	          case 'z':
 	            _this.board.rotateLeft();
+	            _this.board.update();
+	            _this.render();
+	            break;
+	          case 'x':
+	            _this.board.rotateRight();
 	            _this.board.update();
 	            _this.render();
 	            break;
@@ -412,6 +419,16 @@
 	      }
 	    }
 	  }, {
+	    key: 'rotateRight',
+	    value: function rotateRight() {
+	      var newCoords = this.currentPiece.rotateRightCoords();
+	      if (this.validCoords(newCoords)) {
+	        this.clearCurrentPieceTiles();
+	        this.currentPiece.coords = newCoords;
+	        this.currentPiece.executeRotationRight(newCoords);
+	      }
+	    }
+	  }, {
 	    key: 'validCoords',
 	    value: function validCoords(coords) {
 	      var result = true;
@@ -526,6 +543,29 @@
 	      this.coords = newCoords;
 	      this.position = this.positions[(this.positions.indexOf(this.position) + 1) % this.positions.length];
 	    }
+	  }, {
+	    key: 'rotateRightCoords',
+	    value: function rotateRightCoords() {
+	      if (this.position === 'horizontal') {
+	        var first = [this.coords[0][0] - 1, this.coords[0][1] + 2];
+	        var second = [this.coords[1][0], this.coords[1][1] + 1];
+	        var third = [this.coords[2][0] + 1, this.coords[2][1]];
+	        var fourth = [this.coords[3][0] + 2, this.coords[3][1] - 1];
+	        return [first, second, third, fourth];
+	      } else {
+	        var _first2 = [this.coords[0][0] + 1, this.coords[0][1] - 2];
+	        var _second2 = [this.coords[1][0], this.coords[1][1] - 1];
+	        var _third2 = [this.coords[2][0] - 1, this.coords[2][1]];
+	        var _fourth2 = [this.coords[3][0] - 2, this.coords[3][1] + 1];
+	        return [_first2, _second2, _third2, _fourth2];
+	      }
+	    }
+	  }, {
+	    key: 'executeRotationRight',
+	    value: function executeRotationRight(newCoords) {
+	      this.coords = newCoords;
+	      this.position = this.positions[(this.positions.indexOf(this.position) - 1) % this.positions.length];
+	    }
 	  }]);
 	
 	  return I;
@@ -561,8 +601,16 @@
 	      return this.coords;
 	    }
 	  }, {
+	    key: 'rotateRightCoords',
+	    value: function rotateRightCoords() {
+	      return this.coords;
+	    }
+	  }, {
 	    key: 'executeRotationLeft',
 	    value: function executeRotationLeft() {}
+	  }, {
+	    key: 'executeRotationRight',
+	    value: function executeRotationRight() {}
 	  }]);
 	
 	  return Brick;
@@ -619,6 +667,29 @@
 	      this.coords = newCoords;
 	      this.position = this.positions[(this.positions.indexOf(this.position) + 1) % this.positions.length];
 	    }
+	  }, {
+	    key: 'rotateRightCoords',
+	    value: function rotateRightCoords() {
+	      if (this.position === 'horizontal') {
+	        var first = [this.coords[0][0] + 2, this.coords[0][1] + 1];
+	        var second = [this.coords[1][0], this.coords[1][1] + 1];
+	        var third = [this.coords[2][0], this.coords[2][1] + 1];
+	        var fourth = [this.coords[3][0], this.coords[3][1] - 1];
+	        return [first, second, third, fourth];
+	      } else {
+	        var _first2 = [this.coords[0][0] - 2, this.coords[0][1] - 1];
+	        var _second2 = [this.coords[1][0], this.coords[1][1] - 1];
+	        var _third2 = [this.coords[2][0], this.coords[2][1] - 1];
+	        var _fourth2 = [this.coords[3][0], this.coords[3][1] + 1];
+	        return [_first2, _second2, _third2, _fourth2];
+	      }
+	    }
+	  }, {
+	    key: 'executeRotationRight',
+	    value: function executeRotationRight(newCoords) {
+	      this.coords = newCoords;
+	      this.position = this.positions[(this.positions.indexOf(this.position) - 1) % this.positions.length];
+	    }
 	  }]);
 	
 	  return RedZ;
@@ -674,6 +745,29 @@
 	    value: function executeRotationLeft(newCoords) {
 	      this.coords = newCoords;
 	      this.position = this.positions[(this.positions.indexOf(this.position) + 1) % this.positions.length];
+	    }
+	  }, {
+	    key: 'rotateRightCoords',
+	    value: function rotateRightCoords() {
+	      if (this.position === 'horizontal') {
+	        var first = [this.coords[0][0], this.coords[0][1] + 1];
+	        var second = [this.coords[1][0], this.coords[1][1] + 1];
+	        var third = [this.coords[2][0], this.coords[2][1] + 3];
+	        var fourth = [this.coords[3][0] - 2, this.coords[3][1] + 1];
+	        return [first, second, third, fourth];
+	      } else {
+	        var _first2 = [this.coords[0][0], this.coords[0][1] - 1];
+	        var _second2 = [this.coords[1][0], this.coords[1][1] - 1];
+	        var _third2 = [this.coords[2][0], this.coords[2][1] - 3];
+	        var _fourth2 = [this.coords[3][0] + 2, this.coords[3][1] - 1];
+	        return [_first2, _second2, _third2, _fourth2];
+	      }
+	    }
+	  }, {
+	    key: 'executeRotationRight',
+	    value: function executeRotationRight(newCoords) {
+	      this.coords = newCoords;
+	      this.position = this.positions[(this.positions.indexOf(this.position) - 1) % this.positions.length];
 	    }
 	  }]);
 	
@@ -750,6 +844,50 @@
 	      this.coords = newCoords;
 	      this.position = this.positions[(this.positions.indexOf(this.position) + 1) % this.positions.length];
 	    }
+	  }, {
+	    key: 'rotateRightCoords',
+	    value: function rotateRightCoords() {
+	      var first = void 0,
+	          second = void 0,
+	          third = void 0,
+	          fourth = void 0;
+	      switch (this.position) {
+	        case 'down':
+	          first = [this.coords[0][0] - 1, this.coords[0][1] + 1];
+	          second = [this.coords[1][0], this.coords[1][1] - 1];
+	          third = [this.coords[2][0], this.coords[2][1] - 1];
+	          fourth = this.coords[3];
+	          return [first, second, third, fourth];
+	        case 'left':
+	          first = this.coords[0];
+	          second = this.coords[1];
+	          third = this.coords[2];
+	          fourth = [this.coords[3][0] - 1, this.coords[3][1] + 1];
+	          return [first, second, third, fourth];
+	        case 'up':
+	          first = this.coords[0];
+	          second = [this.coords[1][0], this.coords[1][1] + 1];
+	          third = [this.coords[2][0], this.coords[2][1] + 1];
+	          fourth = [this.coords[3][0] + 1, this.coords[3][1] - 1];
+	          return [first, second, third, fourth];
+	        case 'right':
+	          first = [this.coords[0][0] + 1, this.coords[0][1] - 1];
+	          second = this.coords[1];
+	          third = this.coords[2];
+	          fourth = this.coords[3];
+	          return [first, second, third, fourth];
+	        default:
+	          return this.coords;
+	      }
+	    }
+	  }, {
+	    key: 'executeRotationRight',
+	    value: function executeRotationRight(newCoords) {
+	      this.coords = newCoords;
+	      var idx = this.positions.indexOf(this.position);
+	      var newIdx = ((idx - 1) % this.positions.length + this.positions.length) % this.positions.length;
+	      this.position = this.positions[newIdx];
+	    }
 	  }]);
 	
 	  return T;
@@ -798,10 +936,10 @@
 	          fourth = [this.coords[3][0], this.coords[3][1] + 1];
 	          return [first, second, third, fourth];
 	        case 'right':
-	          first = [this.coords[0][0], this.coords[0][1] - 1];
-	          second = [this.coords[1][0] - 1, this.coords[1][1] + 2];
-	          third = [this.coords[2][0], this.coords[2][1] + 1];
-	          fourth = [this.coords[3][0] + 1, this.coords[3][1]];
+	          first = [this.coords[0][0] - 1, this.coords[0][1] - 1];
+	          second = [this.coords[1][0] - 2, this.coords[1][1] + 2];
+	          third = [this.coords[2][0] - 1, this.coords[2][1] + 1];
+	          fourth = [this.coords[3][0], this.coords[3][1]];
 	          return [first, second, third, fourth];
 	        case 'up':
 	          first = [this.coords[0][0] + 1, this.coords[0][1] - 1];
@@ -824,6 +962,50 @@
 	    value: function executeRotationLeft(newCoords) {
 	      this.coords = newCoords;
 	      this.position = this.positions[(this.positions.indexOf(this.position) + 1) % this.positions.length];
+	    }
+	  }, {
+	    key: 'rotateRightCoords',
+	    value: function rotateRightCoords() {
+	      var first = void 0,
+	          second = void 0,
+	          third = void 0,
+	          fourth = void 0;
+	      switch (this.position) {
+	        case 'down':
+	          first = [this.coords[0][0] + 1, this.coords[0][1]];
+	          second = [this.coords[1][0], this.coords[1][1] + 1];
+	          third = [this.coords[2][0] - 1, this.coords[2][1] + 2];
+	          fourth = [this.coords[3][0], this.coords[3][1] - 1];
+	          return [first, second, third, fourth];
+	        case 'left':
+	          first = [this.coords[0][0] - 1, this.coords[0][1] + 1];
+	          second = [this.coords[1][0] - 1, this.coords[1][1] + 1];
+	          third = [this.coords[2][0], this.coords[2][1]];
+	          fourth = [this.coords[3][0], this.coords[3][1] + 2];
+	          return [first, second, third, fourth];
+	        case 'up':
+	          first = [this.coords[0][0] + 1, this.coords[0][1] + 1];
+	          second = [this.coords[1][0] + 2, this.coords[1][1] - 2];
+	          third = [this.coords[2][0] + 1, this.coords[2][1] - 1];
+	          fourth = [this.coords[3][0], this.coords[3][1]];
+	          return [first, second, third, fourth];
+	        case 'right':
+	          first = [this.coords[0][0] - 1, this.coords[0][1] - 2];
+	          second = [this.coords[1][0] - 1, this.coords[1][1]];
+	          third = [this.coords[2][0], this.coords[2][1] - 1];
+	          fourth = [this.coords[3][0], this.coords[3][1] - 1];
+	          return [first, second, third, fourth];
+	        default:
+	          return this.coords;
+	      }
+	    }
+	  }, {
+	    key: 'executeRotationRight',
+	    value: function executeRotationRight(newCoords) {
+	      this.coords = newCoords;
+	      var idx = this.positions.indexOf(this.position);
+	      var newIdx = ((idx - 1) % this.positions.length + this.positions.length) % this.positions.length;
+	      this.position = this.positions[newIdx];
 	    }
 	  }]);
 	
@@ -869,8 +1051,8 @@
 	        case 'down':
 	          first = [this.coords[0][0] + 1, this.coords[0][1] - 2];
 	          second = [this.coords[1][0], this.coords[1][1] - 1];
-	          third = [this.coords[2][0] - 1, this.coords[2][1]];
-	          fourth = [this.coords[3][0], this.coords[3][1] + 1];
+	          third = [this.coords[2][0] - 1, this.coords[2][1] + 1];
+	          fourth = this.coords[3];
 	          return [first, second, third, fourth];
 	        case 'right':
 	          first = [this.coords[0][0] - 1, this.coords[0][1]];
@@ -887,8 +1069,8 @@
 	        case 'left':
 	          first = [this.coords[0][0] - 1, this.coords[0][1] + 2];
 	          second = [this.coords[1][0] - 1, this.coords[1][1] + 2];
-	          third = [this.coords[2][0], this.coords[2][1] + 1];
-	          fourth = [this.coords[3][0], this.coords[3][1] - 1];
+	          third = this.coords[2];
+	          fourth = this.coords[3];
 	          return [first, second, third, fourth];
 	        default:
 	          return this.coords;
@@ -899,6 +1081,50 @@
 	    value: function executeRotationLeft(newCoords) {
 	      this.coords = newCoords;
 	      this.position = this.positions[(this.positions.indexOf(this.position) + 1) % this.positions.length];
+	    }
+	  }, {
+	    key: 'rotateRightCoords',
+	    value: function rotateRightCoords() {
+	      var first = void 0,
+	          second = void 0,
+	          third = void 0,
+	          fourth = void 0;
+	      switch (this.position) {
+	        case 'down':
+	          first = [this.coords[0][0] + 1, this.coords[0][1] - 2];
+	          second = [this.coords[1][0] + 1, this.coords[1][1] - 2];
+	          third = this.coords[2];
+	          fourth = this.coords[3];
+	          return [first, second, third, fourth];
+	        case 'left':
+	          first = [this.coords[0][0] - 1, this.coords[0][1]];
+	          second = [this.coords[1][0] - 2, this.coords[1][1] + 1];
+	          third = [this.coords[2][0] - 1, this.coords[2][1] - 1];
+	          fourth = [this.coords[3][0], this.coords[3][1] - 2];
+	          return [first, second, third, fourth];
+	        case 'up':
+	          first = [this.coords[0][0] + 1, this.coords[0][1]];
+	          second = [this.coords[1][0] + 1, this.coords[1][1]];
+	          third = [this.coords[2][0], this.coords[2][1] + 2];
+	          fourth = [this.coords[3][0], this.coords[3][1] + 2];
+	          return [first, second, third, fourth];
+	        case 'right':
+	          first = [this.coords[0][0] - 1, this.coords[0][1] + 2];
+	          second = [this.coords[1][0], this.coords[1][1] + 1];
+	          third = [this.coords[2][0] + 1, this.coords[2][1] - 1];
+	          fourth = this.coords[3];
+	          return [first, second, third, fourth];
+	        default:
+	          return this.coords;
+	      }
+	    }
+	  }, {
+	    key: 'executeRotationRight',
+	    value: function executeRotationRight(newCoords) {
+	      this.coords = newCoords;
+	      var idx = this.positions.indexOf(this.position);
+	      var newIdx = ((idx - 1) % this.positions.length + this.positions.length) % this.positions.length;
+	      this.position = this.positions[newIdx];
 	    }
 	  }]);
 	

@@ -12,13 +12,15 @@ class TetrisView {
     document.addEventListener('keydown', event => {
       switch (event.key) {
         case 's':
-          this.play();
+          if (!this.timerId) {
+            this.play();
+          }
           break;
         case 'p':
           window.clearInterval(this.timerId);
+          this.timerId = undefined;
           break;
         case 'ArrowLeft':
-          let that = this;
           this.board.moveLeft();
           this.board.update();
           this.render();
@@ -30,6 +32,11 @@ class TetrisView {
           break;
         case 'z':
           this.board.rotateLeft();
+          this.board.update();
+          this.render();
+          break;
+        case 'x':
+          this.board.rotateRight();
           this.board.update();
           this.render();
           break;

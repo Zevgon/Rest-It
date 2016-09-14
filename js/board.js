@@ -182,6 +182,15 @@ class Board {
     }
   }
 
+  rotateRight () {
+    let newCoords = this.currentPiece.rotateRightCoords();
+    if (this.validCoords(newCoords)) {
+      this.clearCurrentPieceTiles();
+      this.currentPiece.coords = newCoords;
+      this.currentPiece.executeRotationRight(newCoords);
+    }
+  }
+
   validCoords(coords) {
     let result = true;
     let grid = this.grid;
