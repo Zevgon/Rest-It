@@ -147,7 +147,17 @@ class Board {
     });
 
     if (stop) {
+      let gameOver;
       let that = this;
+      this.currentPiece.coords.forEach(coord => {
+        if (coord[0] < 0) {
+          gameOver = true;
+          that.gameOver();
+        }
+      });
+      if (gameOver) {
+        return;
+      }
       let sortedCoords = this.currentPiece.coords.mergeSort((coord1, coord2) => coord1[1] > coord2[1])
       sortedCoords.forEach(coord => {
         that.fallenCoords.push(coord);
@@ -209,6 +219,10 @@ class Board {
       }
     });
     return result;
+  }
+
+  gameOver () {
+    return this.fallenCoords.any(coord => coord[0] <= 0);
   }
 
 }

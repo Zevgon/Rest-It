@@ -80,3 +80,11 @@ li {
 .blue-l {
 	background-color: blue;
 }
+
+.show {
+	color: red;
+}
+
+.no-show {
+	color: transparent;
+}

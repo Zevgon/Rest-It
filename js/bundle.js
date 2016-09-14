@@ -136,6 +136,11 @@
 	
 	      this.timerId = window.setInterval(function () {
 	        _this2.board.fall();
+	        if (_this2.board.gameOver()) {
+	          window.clearInterval(_this2.timerId);
+	          var GOMessage = document.getElementById('game-over');
+	          GOMessage.setAttribute('class', 'show');
+	        }
 	        _this2.board.update();
 	        _this2.render();
 	      }, 100);
@@ -161,6 +166,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -373,8 +380,20 @@
 	      });
 	
 	      if (stop) {
-	        (function () {
+	        var _ret3 = function () {
+	          var gameOver = void 0;
 	          var that = _this3;
+	          _this3.currentPiece.coords.forEach(function (coord) {
+	            if (coord[0] < 0) {
+	              gameOver = true;
+	              that.gameOver();
+	            }
+	          });
+	          if (gameOver) {
+	            return {
+	              v: void 0
+	            };
+	          }
 	          var sortedCoords = _this3.currentPiece.coords.mergeSort(function (coord1, coord2) {
 	            return coord1[1] > coord2[1];
 	          });
@@ -383,7 +402,9 @@
 	          });
 	          _this3.clearLines();
 	          _this3.currentPiece = _this3.sample();
-	        })();
+	        }();
+	
+	        if ((typeof _ret3 === 'undefined' ? 'undefined' : _typeof(_ret3)) === "object") return _ret3.v;
 	      }
 	    }
 	  }, {
@@ -450,6 +471,13 @@
 	        }
 	      });
 	      return result;
+	    }
+	  }, {
+	    key: 'gameOver',
+	    value: function gameOver() {
+	      return this.fallenCoords.any(function (coord) {
+	        return coord[0] <= 0;
+	      });
 	    }
 	  }]);
 	

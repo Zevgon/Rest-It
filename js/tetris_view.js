@@ -49,6 +49,11 @@ class TetrisView {
   play () {
     this.timerId = window.setInterval(() => {
       this.board.fall();
+      if (this.board.gameOver()) {
+        window.clearInterval(this.timerId);
+        let GOMessage = document.getElementById('game-over');
+        GOMessage.setAttribute('class', 'show');
+      }
       this.board.update();
       this.render();
     }, 100);
