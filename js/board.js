@@ -20,7 +20,7 @@ class Board {
       grid.push(row);
     }
 
-    this.clearedLineCount = 9;
+    this.clearedLineCount = 0;
     this.fallenCoords = [];
     this.grid = grid;
     this.pieceTypes = [I, Brick, RedZ, GreenZ, T, OrangeL, BlueL];
