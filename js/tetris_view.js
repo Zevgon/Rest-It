@@ -8,7 +8,7 @@ class TetrisView {
     this.render();
     this.startEventListeners();
     this.speed = 1000;
-    this.level = 0;
+    this.level = 1;
   }
 
   startEventListeners () {
@@ -24,16 +24,19 @@ class TetrisView {
           this.timerId = undefined;
           break;
         case 'ArrowLeft':
+          event.preventDefault();
           this.board.moveLeft();
           this.board.update();
           this.render();
           break;
         case 'ArrowRight':
+          event.preventDefault();
           this.board.moveRight();
           this.board.update();
           this.render();
           break;
         case 'ArrowDown':
+          event.preventDefault();
           if (this.board.goToNextLevel) {
             this.increaseSpeed();
             window.clearInterval(this.timerId);
@@ -60,12 +63,15 @@ class TetrisView {
           this.timerId = undefined;
           document.getElementById('game-over').setAttribute('class', 'no-show');
           break;
-        case 'l':
-          this.increaseSpeed();
-          window.clearInterval(this.timerId);
-          this.timerId = undefined;
-          this.play();
+        case 'ArrowUp':
+          event.preventDefault();
           break;
+        // case 'l':
+        //   this.increaseSpeed();
+        //   window.clearInterval(this.timerId);
+        //   this.timerId = undefined;
+        //   this.play();
+        //   break;
         default:
           return;
       }
@@ -90,7 +96,7 @@ class TetrisView {
         window.clearInterval(this.timerId);
         let GOMessage = document.getElementById('game-over');
         GOMessage.setAttribute('class', 'show');
-        GOMessage.innerHTML = `You cleared ${this.board.clearedLineCount} lines! Press R to reset the board.`;
+        GOMessage.innerHTML = `You finished at level ${this.level}!`;
       }
       this.board.update();
       this.render();
@@ -99,7 +105,7 @@ class TetrisView {
 
   render () {
     this.clearedLineCount.innerHTML = `Lines cleared: ${this.board.clearedLineCount.toString()}`;
-    document.getElementById('user-speed').innerHTML = `Level: ${this.level ? this.level : 0}`;
+    document.getElementById('user-speed').innerHTML = `Level: ${this.level ? this.level : 1}`;
     this.tetris.innerHTML = this.board.toString();
   }
 }

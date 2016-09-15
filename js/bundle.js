@@ -88,7 +88,7 @@
 	    this.render();
 	    this.startEventListeners();
 	    this.speed = 1000;
-	    this.level = 0;
+	    this.level = 1;
 	  }
 	
 	  _createClass(TetrisView, [{
@@ -108,16 +108,19 @@
 	            _this.timerId = undefined;
 	            break;
 	          case 'ArrowLeft':
+	            event.preventDefault();
 	            _this.board.moveLeft();
 	            _this.board.update();
 	            _this.render();
 	            break;
 	          case 'ArrowRight':
+	            event.preventDefault();
 	            _this.board.moveRight();
 	            _this.board.update();
 	            _this.render();
 	            break;
 	          case 'ArrowDown':
+	            event.preventDefault();
 	            if (_this.board.goToNextLevel) {
 	              _this.increaseSpeed();
 	              window.clearInterval(_this.timerId);
@@ -144,12 +147,15 @@
 	            _this.timerId = undefined;
 	            document.getElementById('game-over').setAttribute('class', 'no-show');
 	            break;
-	          case 'l':
-	            _this.increaseSpeed();
-	            window.clearInterval(_this.timerId);
-	            _this.timerId = undefined;
-	            _this.play();
+	          case 'ArrowUp':
+	            event.preventDefault();
 	            break;
+	          // case 'l':
+	          //   this.increaseSpeed();
+	          //   window.clearInterval(this.timerId);
+	          //   this.timerId = undefined;
+	          //   this.play();
+	          //   break;
 	          default:
 	            return;
 	        }
@@ -178,7 +184,7 @@
 	          window.clearInterval(_this2.timerId);
 	          var GOMessage = document.getElementById('game-over');
 	          GOMessage.setAttribute('class', 'show');
-	          GOMessage.innerHTML = 'You cleared ' + _this2.board.clearedLineCount + ' lines! Press R to reset the board.';
+	          GOMessage.innerHTML = 'You finished at level ' + _this2.level + '!';
 	        }
 	        _this2.board.update();
 	        _this2.render();
@@ -188,7 +194,7 @@
 	    key: 'render',
 	    value: function render() {
 	      this.clearedLineCount.innerHTML = 'Lines cleared: ' + this.board.clearedLineCount.toString();
-	      document.getElementById('user-speed').innerHTML = 'Level: ' + (this.level ? this.level : 0);
+	      document.getElementById('user-speed').innerHTML = 'Level: ' + (this.level ? this.level : 1);
 	      this.tetris.innerHTML = this.board.toString();
 	    }
 	  }]);
