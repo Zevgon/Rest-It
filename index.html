@@ -7,17 +7,25 @@
     <script src='./js/bundle.js'></script>
   </head>
   <body>
-    <h1>Tetris</h1>
-    <figure id='tetris'></figure>
-    <h1 id='game-over' class='no-show'>Good job!</h1>
-    <div id='line-incrementor'></div>
-    <h2>Controls</h2>
-    <ul>
-      <li>S to start</li>
-      <li>P to pause</li>
-      <li>Z to rotate left</li>
-      <li>X to rotate right</li>
-      <li>Arrow keys to move</li>
-    </ul>
+    <div class='container'>
+      <div class='general-info'>
+        <div id='line-incrementor'></div>
+      </div>
+      <div class='tetris-container'>
+        <figure id='tetris'></figure>
+        <div id='game-over' class='no-show'>You cleared X lines</div>
+      </div>
+      <div class='controls'>
+        <h2>Controls</h2>
+        <ul>
+          <li>Start: S</li>
+          <li>Pause: P</li>
+          <li>Rotate left: Z</li>
+          <li>Rotate right: X</li>
+          <li>Move: arrow keys</li>
+          <li>Restart: R</li>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>

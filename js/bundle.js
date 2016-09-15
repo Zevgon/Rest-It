@@ -125,6 +125,12 @@
 	            _this.board.update();
 	            _this.render();
 	            break;
+	          case 'r':
+	            _this.board = new _board2.default();
+	            _this.render();
+	            _this.timerId = undefined;
+	            document.getElementById('game-over').setAttribute('class', 'no-show');
+	            break;
 	          default:
 	            return;
 	        }
@@ -144,7 +150,7 @@
 	        }
 	        _this2.board.update();
 	        _this2.render();
-	      }, 100);
+	      }, 10);
 	    }
 	  }, {
 	    key: 'render',

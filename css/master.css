@@ -19,11 +19,17 @@ time, mark, audio, video {
 	vertical-align: baseline;
   box-sizing: border-box;
   position: relative;
-  font-family: roboto;
+  font-family: sans-serif;
+	background-color: transparent;
+	color: white;
+}
+
+body {
+	background-color: rgb(180, 180, 180);
 }
 
 figure {
-  margin: 0 auto;
+  margin: 30px auto;
   display: flex;
   flex-direction: column;
 }
@@ -38,6 +44,23 @@ ul {
   margin: 0 auto;
 }
 
+figure ul {
+	border-right: 5px solid white;
+	border-left: 5px solid white;
+}
+
+figure ul:first-child {
+	border-top: 5px solid white;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+figure ul:last-child {
+	border-bottom: 5px solid white;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px
+}
+
 .title {
     text-align: center;
     font-family: sans-serif;
@@ -46,9 +69,11 @@ ul {
 }
 
 figure li {
-    width: 20px;
-    height: 20px;
-    background-color: black;
+    border-left: 1px solid rgb(23, 24, 25);
+    border-bottom: 1px solid rgb(23, 24, 25);
+    width: 23px;
+    height: 23px;
+    background-color: rgb(9, 11, 12);
     float: left;
 }
 
@@ -109,13 +134,76 @@ figure li {
 }
 
 .show {
-	color: red;
+    color: white;
+    border: 3px solid white;
+    border-radius: 5px;
+    padding: 19px;
+    background-color: rgb(40, 40, 40);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 80%;
 }
 
 .no-show {
 	color: transparent;
 }
 
-#line-incrementor {
-	color: black;
+#title {
+	font-family: roboto;
+	font-size: 36px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.container {
+    align-items: center;
+    width: 700px;
+    display: flex;
+    margin: 30px auto;
+    justify-content: space-between;
+}
+
+.controls {
+    border: 3px solid white;
+    border-radius: 5px;
+    padding: 20px;
+		background-color: rgb(40, 40, 40);
+}
+
+.general-info {
+    border: 3px solid white;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: rgb(40, 40, 40);
+    color: white;
+}
+
+.not-used-yet {
+    background-color: black;
+    border: 1px solid rgb(103, 103, 103);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+
+.controls h2 {
+		letter-spacing: 2px;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px black;
+}
+
+.controls ul {
+    border: 10px solid black;
+    border-radius: 5px;
+}
+
+.controls ul li {
+	background-color: rgb(100, 100, 100);
+	letter-spacing: 1px;
+	border-bottom: 1px solid black;
+	padding: 6px 20px;
 }

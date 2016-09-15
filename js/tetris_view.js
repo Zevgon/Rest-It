@@ -41,6 +41,12 @@ class TetrisView {
           this.board.update();
           this.render();
           break;
+        case 'r':
+          this.board = new Board;
+          this.render();
+          this.timerId = undefined;
+          document.getElementById('game-over').setAttribute('class', 'no-show');
+          break;
         default:
           return;
       }
@@ -57,7 +63,7 @@ class TetrisView {
       }
       this.board.update();
       this.render();
-    }, 100);
+    }, 10);
   }
 
   render () {
