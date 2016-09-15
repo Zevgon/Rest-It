@@ -23,8 +23,7 @@ class Board {
     this.clearedLineCount = 0;
     this.fallenCoords = [];
     this.grid = grid;
-    // this.pieceTypes = [I, Brick, RedZ, GreenZ, T, OrangeL, BlueL];
-    this.pieceTypes = [I, RedZ];
+    this.pieceTypes = [I, Brick, RedZ, GreenZ, T, OrangeL, BlueL];
     this.currentPiece = this.sample();
   }
 

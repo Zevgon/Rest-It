@@ -227,8 +227,7 @@
 	    this.clearedLineCount = 0;
 	    this.fallenCoords = [];
 	    this.grid = grid;
-	    // this.pieceTypes = [I, Brick, RedZ, GreenZ, T, OrangeL, BlueL];
-	    this.pieceTypes = [_i2.default, _red_z2.default];
+	    this.pieceTypes = [_i2.default, _brick2.default, _red_z2.default, _green_z2.default, _t2.default, _orange_l2.default, _blue_l2.default];
 	    this.currentPiece = this.sample();
 	  }
 	

@@ -45,40 +45,67 @@ ul {
     margin: 20px 0px;
 }
 
-li {
+figure li {
     width: 20px;
     height: 20px;
     background-color: black;
-    border: 1px solid blue;
     float: left;
 }
 
 .i {
-  background-color: cyan;
+    background-color: cyan;
+		border-bottom: 2px solid rgb(0, 120, 120);
+    border-right: 2px solid rgb(0, 216, 216);
+    border-left: 2px solid rgb(0, 216, 216);
+    border-top: 2px solid rgb(179, 271, 271);
 }
 
 .brick {
 	background-color: yellow;
+	border-bottom: 2px solid rgb(120, 120, 0);
+	border-right: 2px solid rgb(216, 216, 0);
+	border-left: 2px solid rgb(216, 216, 0);
+	border-top: 2px solid rgb(271, 271, 179);
 }
 
 .red-z {
 	background-color: red;
+	border-bottom: 2px solid rgb(120, 0, 0);
+	border-left: 2px solid rgb(216, 0, 0);
+	border-right: 2px solid rgb(216, 0, 0);
+	border-top: 2px solid rgb(251, 179, 179);
 }
 
 .green-z {
 	background-color: green;
+	border-bottom: 2px solid rgb(0, 120, 0);
+	border-left: 2px solid rgb(0, 216, 0);
+	border-left: 2px solid rgb(0, 216, 0);
+	border-top: 2px solid rgb(179, 251, 179);
 }
 
 .t {
 	background-color: purple;
+	border-bottom: 2px solid rgb(80, 0, 120);
+	border-left: 2px solid rgb(144, 0, 216);
+	border-right: 2px solid rgb(144, 0, 216);
+	border-top: 2px solid rgb(227, 179, 251);
 }
 
 .orange-l {
 	background-color: orange;
+	border-bottom: 2px solid rgb(120, 80, 0);
+	border-right: 2px solid rgb(216, 144, 0);
+	border-left: 2px solid rgb(216, 144, 0);
+	border-top: 2px solid rgb(251, 227, 179);
 }
 
 .blue-l {
-	background-color: blue;
+	background-color: 2px solid blue;
+	border-bottom: 2px solid rgb(0, 0, 120);
+	border-right: 2px solid rgb(0, 0, 216);
+	border-left: 2px solid rgb(0, 0, 216);
+	border-top: 2px solid rgb(179, 179, 251);
 }
 
 .show {
