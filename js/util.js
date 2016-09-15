@@ -26,6 +26,33 @@ export const lowestYCoords = piece => {
   return answer;
 }
 
+export const merge = function (arr1, arr2, callback) {
+  if (callback === undefined) {
+    callback = function (x, y) {
+      if (x < y) {
+        return -1;
+      } else if (x === y) {
+        return 0;
+      } else {
+        return 1;
+      }
+    };
+  }
+
+  let result = [];
+  while ((arr1.length !== 0) && (arr2.length !== 0)) {
+    if (callback(arr1[0], arr2[0]) < 0) {
+      result.push(arr1.shift());
+    } else {
+      result.push(arr2.shift());
+    }
+  }
+
+  return result.concat(arr1).concat(arr2);
+}
+
+
+
 export const moveSquareDown = (grid, pos, numPositionsDown) => {
   let className = grid[pos[0]][pos[1]].className;
   grid[pos[0]][pos[1]].className = '';
@@ -150,7 +177,6 @@ export const monkeyPatches = () => {
 
     let sortedLeft = left.mergeSort(callback);
     let sortedRight = right.mergeSort(callback);
-
     return merge(sortedLeft, sortedRight, callback);
   };
 

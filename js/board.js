@@ -6,7 +6,7 @@ import GreenZ from './green_z';
 import T from './t';
 import OrangeL from './orange_l';
 import BlueL from './blue_l';
-import { tileBelow, tileLeft, tileRight, lowestYCoords, monkeyPatches, moveSquareDown} from './util';
+import { tileBelow, tileLeft, tileRight, lowestYCoords, monkeyPatches, moveSquareDown, merge } from './util';
 monkeyPatches();
 
 class Board {
@@ -20,18 +20,12 @@ class Board {
       grid.push(row);
     }
 
+    this.clearedLineCount = 0;
     this.fallenCoords = [];
     this.grid = grid;
-    this.pieceTypes = [I, Brick, RedZ, GreenZ, T, OrangeL, BlueL];
+    // this.pieceTypes = [I, Brick, RedZ, GreenZ, T, OrangeL, BlueL];
+    this.pieceTypes = [I, RedZ];
     this.currentPiece = this.sample();
-
-    this.sample = this.sample.bind(this);
-    this.update = this.update.bind(this);
-    this.maybeStop = this.maybeStop.bind(this);
-    this.clearCurrentPieceTiles = this.clearCurrentPieceTiles.bind(this);
-    this.validCoords = this.validCoords.bind(this);
-    this.clearLines = this.clearLines.bind(this);
-    this.clearLine = this.clearLine.bind(this);
   }
 
   clearLines () {
@@ -76,6 +70,7 @@ class Board {
   }
 
   clearLine (yCoord) {
+    this.clearedLineCount += 1;
     let newRow = [];
     this.grid[yCoord].forEach((tile, idx) => {
       newRow.push(new Tile([yCoord, idx], ''));
@@ -147,21 +142,17 @@ class Board {
     });
 
     if (stop) {
-      let gameOver;
-      let that = this;
-      this.currentPiece.coords.forEach(coord => {
-        if (coord[0] < 0) {
-          gameOver = true;
-          that.gameOver();
+      let comparator = (arr1, arr2) => {
+        if (arr1[0] > arr2[0]) {
+          return -1;
+        } else if (arr1[0] === arr2[0]) {
+          return 0;
+        } else {
+          return 1;
         }
-      });
-      if (gameOver) {
-        return;
       }
-      let sortedCoords = this.currentPiece.coords.mergeSort((coord1, coord2) => coord1[1] > coord2[1])
-      sortedCoords.forEach(coord => {
-        that.fallenCoords.push(coord);
-      });
+      let sortedCoords = this.currentPiece.coords.mergeSort(comparator);
+      this.fallenCoords = merge(this.fallenCoords, sortedCoords, comparator);
       this.clearLines();
       this.currentPiece = this.sample();
     }

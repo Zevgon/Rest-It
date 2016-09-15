@@ -4,6 +4,7 @@ class TetrisView {
   constructor (tetris) {
     this.tetris = tetris;
     this.board = new Board;
+    this.clearedLineCount = document.getElementById('line-incrementor');
     this.render();
     this.startEventListeners();
   }
@@ -60,6 +61,7 @@ class TetrisView {
   }
 
   render () {
+    this.clearedLineCount.innerHTML = `Lines cleared: ${this.board.clearedLineCount.toString()}`;
     this.tetris.innerHTML = this.board.toString();
   }
 }

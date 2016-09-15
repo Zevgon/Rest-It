@@ -88,3 +88,7 @@ li {
 .no-show {
 	color: transparent;
 }
+
+#line-incrementor {
+	color: black;
+}

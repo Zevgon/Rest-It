@@ -84,6 +84,7 @@
 	
 	    this.tetris = tetris;
 	    this.board = new _board2.default();
+	    this.clearedLineCount = document.getElementById('line-incrementor');
 	    this.render();
 	    this.startEventListeners();
 	  }
@@ -148,6 +149,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      this.clearedLineCount.innerHTML = 'Lines cleared: ' + this.board.clearedLineCount.toString();
 	      this.tetris.innerHTML = this.board.toString();
 	    }
 	  }]);
@@ -166,8 +168,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -224,18 +224,12 @@
 	      grid.push(row);
 	    }
 	
+	    this.clearedLineCount = 0;
 	    this.fallenCoords = [];
 	    this.grid = grid;
-	    this.pieceTypes = [_i2.default, _brick2.default, _red_z2.default, _green_z2.default, _t2.default, _orange_l2.default, _blue_l2.default];
+	    // this.pieceTypes = [I, Brick, RedZ, GreenZ, T, OrangeL, BlueL];
+	    this.pieceTypes = [_i2.default, _red_z2.default];
 	    this.currentPiece = this.sample();
-	
-	    this.sample = this.sample.bind(this);
-	    this.update = this.update.bind(this);
-	    this.maybeStop = this.maybeStop.bind(this);
-	    this.clearCurrentPieceTiles = this.clearCurrentPieceTiles.bind(this);
-	    this.validCoords = this.validCoords.bind(this);
-	    this.clearLines = this.clearLines.bind(this);
-	    this.clearLine = this.clearLine.bind(this);
 	  }
 	
 	  _createClass(Board, [{
@@ -297,6 +291,7 @@
 	  }, {
 	    key: 'clearLine',
 	    value: function clearLine(yCoord) {
+	      this.clearedLineCount += 1;
 	      var newRow = [];
 	      this.grid[yCoord].forEach(function (tile, idx) {
 	        newRow.push(new _tile2.default([yCoord, idx], ''));
@@ -366,8 +361,6 @@
 	  }, {
 	    key: 'maybeStop',
 	    value: function maybeStop() {
-	      var _this3 = this;
-	
 	      var stop = false;
 	      var that = this;
 	      (0, _util.lowestYCoords)(this.currentPiece).forEach(function (coord) {
@@ -380,31 +373,19 @@
 	      });
 	
 	      if (stop) {
-	        var _ret3 = function () {
-	          var gameOver = void 0;
-	          var that = _this3;
-	          _this3.currentPiece.coords.forEach(function (coord) {
-	            if (coord[0] < 0) {
-	              gameOver = true;
-	              that.gameOver();
-	            }
-	          });
-	          if (gameOver) {
-	            return {
-	              v: void 0
-	            };
+	        var comparator = function comparator(arr1, arr2) {
+	          if (arr1[0] > arr2[0]) {
+	            return -1;
+	          } else if (arr1[0] === arr2[0]) {
+	            return 0;
+	          } else {
+	            return 1;
 	          }
-	          var sortedCoords = _this3.currentPiece.coords.mergeSort(function (coord1, coord2) {
-	            return coord1[1] > coord2[1];
-	          });
-	          sortedCoords.forEach(function (coord) {
-	            that.fallenCoords.push(coord);
-	          });
-	          _this3.clearLines();
-	          _this3.currentPiece = _this3.sample();
-	        }();
-	
-	        if ((typeof _ret3 === 'undefined' ? 'undefined' : _typeof(_ret3)) === "object") return _ret3.v;
+	        };
+	        var sortedCoords = this.currentPiece.coords.mergeSort(comparator);
+	        this.fallenCoords = (0, _util.merge)(this.fallenCoords, sortedCoords, comparator);
+	        this.clearLines();
+	        this.currentPiece = this.sample();
 	      }
 	    }
 	  }, {
@@ -1202,6 +1183,31 @@
 	  return answer;
 	};
 	
+	var merge = exports.merge = function merge(arr1, arr2, callback) {
+	  if (callback === undefined) {
+	    callback = function callback(x, y) {
+	      if (x < y) {
+	        return -1;
+	      } else if (x === y) {
+	        return 0;
+	      } else {
+	        return 1;
+	      }
+	    };
+	  }
+	
+	  var result = [];
+	  while (arr1.length !== 0 && arr2.length !== 0) {
+	    if (callback(arr1[0], arr2[0]) < 0) {
+	      result.push(arr1.shift());
+	    } else {
+	      result.push(arr2.shift());
+	    }
+	  }
+	
+	  return result.concat(arr1).concat(arr2);
+	};
+	
 	var moveSquareDown = exports.moveSquareDown = function moveSquareDown(grid, pos, numPositionsDown) {
 	  var className = grid[pos[0]][pos[1]].className;
 	  grid[pos[0]][pos[1]].className = '';
@@ -1328,7 +1334,6 @@
 	
 	    var sortedLeft = left.mergeSort(callback);
 	    var sortedRight = right.mergeSort(callback);
-	
 	    return merge(sortedLeft, sortedRight, callback);
 	  };
 	
