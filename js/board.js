@@ -20,11 +20,12 @@ class Board {
       grid.push(row);
     }
 
-    this.clearedLineCount = 0;
+    this.clearedLineCount = 9;
     this.fallenCoords = [];
     this.grid = grid;
     this.pieceTypes = [I, Brick, RedZ, GreenZ, T, OrangeL, BlueL];
     this.currentPiece = this.sample();
+    this.goToNextLevel = false;
   }
 
   clearLines () {
@@ -66,6 +67,7 @@ class Board {
         }
       });
     }
+
   }
 
   clearLine (yCoord) {
@@ -109,6 +111,7 @@ class Board {
   }
 
   fall () {
+    this.goToNextLevel = false;
     this.maybeStop();
     this.clearCurrentPieceTiles();
     this.currentPiece.coords = this.currentPiece.coords.map(coord => {
@@ -152,7 +155,14 @@ class Board {
       }
       let sortedCoords = this.currentPiece.coords.mergeSort(comparator);
       this.fallenCoords = merge(this.fallenCoords, sortedCoords, comparator);
+      let clearedStart = this.clearedLineCount;
       this.clearLines();
+      let clearedEnd = this.clearedLineCount;
+      for (let i = clearedStart + 1; i <= clearedEnd; i++) {
+        if (i % 10 === 0) {
+          that.goToNextLevel = true;
+        }
+      }
       this.currentPiece = this.sample();
     }
   }

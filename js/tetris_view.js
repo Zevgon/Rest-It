@@ -7,6 +7,8 @@ class TetrisView {
     this.clearedLineCount = document.getElementById('line-incrementor');
     this.render();
     this.startEventListeners();
+    this.speed = 1000;
+    this.level = 0;
   }
 
   startEventListeners () {
@@ -31,6 +33,17 @@ class TetrisView {
           this.board.update();
           this.render();
           break;
+        case 'ArrowDown':
+          if (this.board.goToNextLevel) {
+            this.increaseSpeed();
+            window.clearInterval(this.timerId);
+            this.timerId = undefined;
+            this.play();
+          }
+          this.board.fall();
+          this.board.update();
+          this.render();
+          break;
         case 'z':
           this.board.rotateLeft();
           this.board.update();
@@ -47,27 +60,46 @@ class TetrisView {
           this.timerId = undefined;
           document.getElementById('game-over').setAttribute('class', 'no-show');
           break;
+        case 'l':
+          this.increaseSpeed();
+          window.clearInterval(this.timerId);
+          this.timerId = undefined;
+          this.play();
+          break;
         default:
           return;
       }
     });
   }
 
+  increaseSpeed () {
+    this.speed = Math.floor(this.speed * 0.87);
+    this.level += 1;
+  }
+
   play () {
     this.timerId = window.setInterval(() => {
+      if (this.board.goToNextLevel) {
+        this.increaseSpeed();
+        window.clearInterval(this.timerId);
+        this.timerId = undefined;
+        this.play();
+      }
       this.board.fall();
       if (this.board.gameOver()) {
         window.clearInterval(this.timerId);
         let GOMessage = document.getElementById('game-over');
         GOMessage.setAttribute('class', 'show');
+        GOMessage.innerHTML = `You cleared ${this.board.clearedLineCount} lines! Press R to reset the board.`;
       }
       this.board.update();
       this.render();
-    }, 10);
+    }, this.speed);
   }
 
   render () {
     this.clearedLineCount.innerHTML = `Lines cleared: ${this.board.clearedLineCount.toString()}`;
+    document.getElementById('user-speed').innerHTML = `Level: ${this.level ? this.level : 0}`;
     this.tetris.innerHTML = this.board.toString();
   }
 }

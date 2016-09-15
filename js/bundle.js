@@ -87,6 +87,8 @@
 	    this.clearedLineCount = document.getElementById('line-incrementor');
 	    this.render();
 	    this.startEventListeners();
+	    this.speed = 1000;
+	    this.level = 0;
 	  }
 	
 	  _createClass(TetrisView, [{
@@ -115,6 +117,17 @@
 	            _this.board.update();
 	            _this.render();
 	            break;
+	          case 'ArrowDown':
+	            if (_this.board.goToNextLevel) {
+	              _this.increaseSpeed();
+	              window.clearInterval(_this.timerId);
+	              _this.timerId = undefined;
+	              _this.play();
+	            }
+	            _this.board.fall();
+	            _this.board.update();
+	            _this.render();
+	            break;
 	          case 'z':
 	            _this.board.rotateLeft();
 	            _this.board.update();
@@ -131,10 +144,22 @@
 	            _this.timerId = undefined;
 	            document.getElementById('game-over').setAttribute('class', 'no-show');
 	            break;
+	          case 'l':
+	            _this.increaseSpeed();
+	            window.clearInterval(_this.timerId);
+	            _this.timerId = undefined;
+	            _this.play();
+	            break;
 	          default:
 	            return;
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'increaseSpeed',
+	    value: function increaseSpeed() {
+	      this.speed = Math.floor(this.speed * 0.87);
+	      this.level += 1;
 	    }
 	  }, {
 	    key: 'play',
@@ -142,20 +167,28 @@
 	      var _this2 = this;
 	
 	      this.timerId = window.setInterval(function () {
+	        if (_this2.board.goToNextLevel) {
+	          _this2.increaseSpeed();
+	          window.clearInterval(_this2.timerId);
+	          _this2.timerId = undefined;
+	          _this2.play();
+	        }
 	        _this2.board.fall();
 	        if (_this2.board.gameOver()) {
 	          window.clearInterval(_this2.timerId);
 	          var GOMessage = document.getElementById('game-over');
 	          GOMessage.setAttribute('class', 'show');
+	          GOMessage.innerHTML = 'You cleared ' + _this2.board.clearedLineCount + ' lines! Press R to reset the board.';
 	        }
 	        _this2.board.update();
 	        _this2.render();
-	      }, 10);
+	      }, this.speed);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      this.clearedLineCount.innerHTML = 'Lines cleared: ' + this.board.clearedLineCount.toString();
+	      document.getElementById('user-speed').innerHTML = 'Level: ' + (this.level ? this.level : 0);
 	      this.tetris.innerHTML = this.board.toString();
 	    }
 	  }]);
@@ -230,11 +263,12 @@
 	      grid.push(row);
 	    }
 	
-	    this.clearedLineCount = 0;
+	    this.clearedLineCount = 9;
 	    this.fallenCoords = [];
 	    this.grid = grid;
 	    this.pieceTypes = [_i2.default, _brick2.default, _red_z2.default, _green_z2.default, _t2.default, _orange_l2.default, _blue_l2.default];
 	    this.currentPiece = this.sample();
+	    this.goToNextLevel = false;
 	  }
 	
 	  _createClass(Board, [{
@@ -342,6 +376,7 @@
 	  }, {
 	    key: 'fall',
 	    value: function fall() {
+	      this.goToNextLevel = false;
 	      this.maybeStop();
 	      this.clearCurrentPieceTiles();
 	      this.currentPiece.coords = this.currentPiece.coords.map(function (coord) {
@@ -389,7 +424,14 @@
 	        };
 	        var sortedCoords = this.currentPiece.coords.mergeSort(comparator);
 	        this.fallenCoords = (0, _util.merge)(this.fallenCoords, sortedCoords, comparator);
+	        var clearedStart = this.clearedLineCount;
 	        this.clearLines();
+	        var clearedEnd = this.clearedLineCount;
+	        for (var i = clearedStart + 1; i <= clearedEnd; i++) {
+	          if (i % 10 === 0) {
+	            that.goToNextLevel = true;
+	          }
+	        }
 	        this.currentPiece = this.sample();
 	      }
 	    }
