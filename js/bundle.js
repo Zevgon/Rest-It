@@ -143,12 +143,17 @@
 	            break;
 	          case 'r':
 	            _this.board = new _board2.default();
-	            _this.render();
+	            window.clearInterval(_this.timerId);
 	            _this.timerId = undefined;
+	            _this.play();
+	            _this.render();
 	            document.getElementById('game-over').setAttribute('class', 'no-show');
 	            break;
 	          case 'ArrowUp':
 	            event.preventDefault();
+	            _this.board.rotateLeft();
+	            _this.board.update();
+	            _this.render();
 	            break;
 	          // case 'l':
 	          //   this.increaseSpeed();
@@ -184,7 +189,7 @@
 	          window.clearInterval(_this2.timerId);
 	          var GOMessage = document.getElementById('game-over');
 	          GOMessage.setAttribute('class', 'show');
-	          GOMessage.innerHTML = 'You finished at level ' + _this2.level + '!';
+	          GOMessage.innerHTML = 'You finished at level ' + _this2.level + '! Press R to restart';
 	        }
 	        _this2.board.update();
 	        _this2.render();
@@ -812,16 +817,16 @@
 	    key: 'rotateRightCoords',
 	    value: function rotateRightCoords() {
 	      if (this.position === 'horizontal') {
-	        var first = [this.coords[0][0], this.coords[0][1] + 1];
-	        var second = [this.coords[1][0], this.coords[1][1] + 1];
-	        var third = [this.coords[2][0], this.coords[2][1] + 3];
-	        var fourth = [this.coords[3][0] - 2, this.coords[3][1] + 1];
+	        var first = [this.coords[0][0], this.coords[0][1]];
+	        var second = [this.coords[1][0], this.coords[1][1]];
+	        var third = [this.coords[2][0], this.coords[2][1] + 2];
+	        var fourth = [this.coords[3][0] - 2, this.coords[3][1]];
 	        return [first, second, third, fourth];
 	      } else {
-	        var _first2 = [this.coords[0][0], this.coords[0][1] - 1];
-	        var _second2 = [this.coords[1][0], this.coords[1][1] - 1];
-	        var _third2 = [this.coords[2][0], this.coords[2][1] - 3];
-	        var _fourth2 = [this.coords[3][0] + 2, this.coords[3][1] - 1];
+	        var _first2 = [this.coords[0][0], this.coords[0][1]];
+	        var _second2 = [this.coords[1][0], this.coords[1][1]];
+	        var _third2 = [this.coords[2][0], this.coords[2][1] - 2];
+	        var _fourth2 = [this.coords[3][0] + 2, this.coords[3][1]];
 	        return [_first2, _second2, _third2, _fourth2];
 	      }
 	    }

@@ -59,12 +59,17 @@ class TetrisView {
           break;
         case 'r':
           this.board = new Board;
-          this.render();
+          window.clearInterval(this.timerId);
           this.timerId = undefined;
+          this.play();
+          this.render();
           document.getElementById('game-over').setAttribute('class', 'no-show');
           break;
         case 'ArrowUp':
           event.preventDefault();
+          this.board.rotateLeft();
+          this.board.update();
+          this.render();
           break;
         // case 'l':
         //   this.increaseSpeed();
@@ -96,7 +101,7 @@ class TetrisView {
         window.clearInterval(this.timerId);
         let GOMessage = document.getElementById('game-over');
         GOMessage.setAttribute('class', 'show');
-        GOMessage.innerHTML = `You finished at level ${this.level}!`;
+        GOMessage.innerHTML = `You finished at level ${this.level}! Press R to restart`;
       }
       this.board.update();
       this.render();

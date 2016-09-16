@@ -6,7 +6,7 @@ import GreenZ from './green_z';
 import T from './t';
 import OrangeL from './orange_l';
 import BlueL from './blue_l';
-import { tileBelow, tileLeft, tileRight, lowestYCoords, monkeyPatches, moveSquareDown, merge } from './util';
+import { tileBelow, lowestYCoords, monkeyPatches, moveSquareDown, merge } from './util';
 monkeyPatches();
 
 class Board {
