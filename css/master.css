@@ -172,6 +172,7 @@ figure li {
 
 .tetris-container {
 	width: 240px;
+	min-width: 240px;
 }
 
 .controls {
@@ -219,4 +220,16 @@ figure li {
 
 .info-container {
     width: 135px;
+}
+
+.left {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.github {
+	color: blue;
 }
