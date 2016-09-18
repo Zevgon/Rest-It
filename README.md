@@ -1,6 +1,6 @@
 ## Rest-It
 
-[Live](http://zevgon.github.io/Tetris5)
+[Live](https://zevgon.github.io/Rest-It)
 
 ### Implementation
 
